@@ -1,0 +1,484 @@
+# Copyright (C) 2026 Antigravity
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Artwork Analyzer 1.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-artwork-analyzer\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-21T16:55:13+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wp-artwork-analyzer\n"
+
+#. Plugin Name of the plugin
+#: wp-artwork-analyzer.php
+msgid "WP Artwork Analyzer"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: wp-artwork-analyzer.php
+msgid "https://wordpress.org/plugins/wp-artwork-analyzer/"
+msgstr ""
+
+#. Description of the plugin
+#: wp-artwork-analyzer.php
+msgid "AI-powered artwork analysis with realtime streaming responses using Google Gemini and Contact Form 7."
+msgstr ""
+
+#. Author of the plugin
+#: wp-artwork-analyzer.php
+msgid "Antigravity"
+msgstr ""
+
+#: admin/class-admin.php:24
+#: admin/class-admin.php:25
+msgid "Artwork Analyzer"
+msgstr ""
+
+#: admin/class-admin.php:76
+msgid "Permission denied."
+msgstr ""
+
+#: admin/class-admin.php:100
+msgid "Settings saved successfully."
+msgstr ""
+
+#: admin/views/settings.php:16
+msgid "Artwork Analyzer Settings"
+msgstr ""
+
+#: admin/views/settings.php:21
+#: admin/views/settings.php:38
+msgid "AI Provider"
+msgstr ""
+
+#: admin/views/settings.php:22
+msgid "Analysis Prompt"
+msgstr ""
+
+#: admin/views/settings.php:23
+msgid "Contact Form 7"
+msgstr ""
+
+#: admin/views/settings.php:24
+msgid "Security & Limits"
+msgstr ""
+
+#: admin/views/settings.php:25
+msgid "Storage & Privacy"
+msgstr ""
+
+#: admin/views/settings.php:26
+msgid "Diagnostics & Streaming Test"
+msgstr ""
+
+#: admin/views/settings.php:43
+msgid "Uses Google Gemini Vision with streaming content generation."
+msgstr ""
+
+#: admin/views/settings.php:48
+msgid "Gemini API Key"
+msgstr ""
+
+#: admin/views/settings.php:53
+msgid "Active API Key detected from environment (.env file / constant)"
+msgstr ""
+
+#: admin/views/settings.php:57
+msgid "Configured via .env (leave blank or enter custom override)"
+msgstr ""
+
+#: admin/views/settings.php:58
+msgid "Your Gemini API key remains strictly server-side and is never sent to the browser."
+msgstr ""
+
+#: admin/views/settings.php:63
+msgid "Gemini Model"
+msgstr ""
+
+#: admin/views/settings.php:72
+msgid "Select which multimodal vision model processes the artwork."
+msgstr ""
+
+#: admin/views/settings.php:77
+msgid "Max Output Tokens"
+msgstr ""
+
+#: admin/views/settings.php:80
+msgid "Maximum tokens generated in the streaming response (default 2048)."
+msgstr ""
+
+#: admin/views/settings.php:85
+msgid "Temperature"
+msgstr ""
+
+#: admin/views/settings.php:88
+msgid "Controls creativity (default 0.4 for disciplined art critique)."
+msgstr ""
+
+#: admin/views/settings.php:96
+msgid "Master System Instruction"
+msgstr ""
+
+#: admin/views/settings.php:99
+msgid "Guides how Gemini evaluates the artwork and formats markdown sections."
+msgstr ""
+
+#: admin/views/settings.php:104
+msgid "Max Image Dimension (px)"
+msgstr ""
+
+#: admin/views/settings.php:107
+msgid "Uploaded images larger than this width/height are automatically resized before sending to Gemini to save bandwidth and improve latency (default 2048px)."
+msgstr ""
+
+#: admin/views/settings.php:115
+msgid "Target Contact Form 7 Form"
+msgstr ""
+
+#: admin/views/settings.php:118
+msgid "No Contact Form 7 forms found. Please create a form in Contact Form 7 with an artwork file upload field."
+msgstr ""
+
+#: admin/views/settings.php:121
+msgid "All forms with artwork field"
+msgstr ""
+
+#: admin/views/settings.php:127
+msgid "The selected form will automatically have the artwork analyzer attached."
+msgstr ""
+
+#: admin/views/settings.php:132
+msgid "Shortcode Usage"
+msgstr ""
+
+#: admin/views/settings.php:135
+msgid "Optional: insert this shortcode on any page to explicitly render the analyzer container."
+msgstr ""
+
+#: admin/views/settings.php:143
+msgid "Max Upload File Size (MB)"
+msgstr ""
+
+#: admin/views/settings.php:146
+msgid "Maximum allowed artwork file upload size (default 10 MB)."
+msgstr ""
+
+#: admin/views/settings.php:151
+msgid "Rate Limit Requests"
+msgstr ""
+
+#: admin/views/settings.php:154
+msgid "requests per"
+msgstr ""
+
+#: admin/views/settings.php:156
+msgid "seconds for anonymous visitors (Admins bypass rate limits)."
+msgstr ""
+
+#: admin/views/settings.php:161
+msgid "Cloudflare Turnstile"
+msgstr ""
+
+#: admin/views/settings.php:165
+msgid "Enable Cloudflare Turnstile bot protection"
+msgstr ""
+
+#: admin/views/settings.php:171
+msgid "Turnstile Site Key"
+msgstr ""
+
+#: admin/views/settings.php:178
+msgid "Turnstile Secret Key"
+msgstr ""
+
+#: admin/views/settings.php:188
+msgid "Save Analysis to Database"
+msgstr ""
+
+#: admin/views/settings.php:192
+msgid "Save completed analyses to wp_artwork_analyses table (Default: Off for privacy)"
+msgstr ""
+
+#: admin/views/settings.php:198
+msgid "Save Uploaded Images"
+msgstr ""
+
+#: admin/views/settings.php:202
+msgid "Retain uploaded artworks permanently in uploads/artwork-analyses (Default: Off; temporary files are deleted after Gemini analysis)"
+msgstr ""
+
+#: admin/views/settings.php:209
+msgid "Save Settings"
+msgstr ""
+
+#: admin/views/settings.php:215
+msgid "System Environment Diagnostics"
+msgstr ""
+
+#: admin/views/settings.php:216
+msgid "Verify that your WordPress host supports realtime streaming and external AI connections."
+msgstr ""
+
+#: admin/views/settings.php:220
+msgid "PHP Environment"
+msgstr ""
+
+#: admin/views/settings.php:230
+msgid "WordPress & Integrations"
+msgstr ""
+
+#: admin/views/settings.php:240
+msgid "Upload & Execution Limits"
+msgstr ""
+
+#: admin/views/settings.php:251
+msgid "Interactive Diagnostics Tests"
+msgstr ""
+
+#: admin/views/settings.php:255
+msgid "Test Streaming (Chunk Latency Test)"
+msgstr ""
+
+#: admin/views/settings.php:259
+msgid "Test Gemini Connection"
+msgstr ""
+
+#: admin/views/settings.php:266
+msgid "Diagnostic Output Console"
+msgstr ""
+
+#: includes/class-cf7-integration.php:167
+#: templates/analyzer-output.php:13
+msgid "Analyzing artwork..."
+msgstr ""
+
+#: includes/class-cf7-integration.php:168
+#: templates/analyzer-output.php:18
+msgid "Stop Analysis"
+msgstr ""
+
+#: includes/class-cf7-integration.php:169
+msgid "Analyze Another Artwork"
+msgstr ""
+
+#: includes/class-cf7-integration.php:170
+#: templates/analyzer-output.php:77
+msgid "Try Again"
+msgstr ""
+
+#: includes/class-cf7-integration.php:171
+msgid "Preparing artwork analysis..."
+msgstr ""
+
+#: includes/class-cf7-integration.php:172
+msgid "Optimizing & uploading image..."
+msgstr ""
+
+#: includes/class-cf7-integration.php:173
+msgid "Generating live critique..."
+msgstr ""
+
+#: includes/class-cf7-integration.php:174
+msgid "Artwork analysis complete."
+msgstr ""
+
+#: includes/class-cf7-integration.php:175
+msgid "Analysis was stopped."
+msgstr ""
+
+#: includes/class-cf7-integration.php:176
+msgid "File exceeds maximum allowed size."
+msgstr ""
+
+#: includes/class-cf7-integration.php:177
+msgid "Only JPG, PNG, and WEBP files are supported."
+msgstr ""
+
+#: includes/class-cf7-integration.php:178
+msgid "Please select an artwork image to analyze."
+msgstr ""
+
+#: includes/class-cf7-integration.php:179
+msgid "Choose Image File"
+msgstr ""
+
+#: includes/class-cf7-integration.php:180
+msgid "Take Photo"
+msgstr ""
+
+#: includes/class-cf7-integration.php:181
+msgid "Capture Artwork with Camera"
+msgstr ""
+
+#: includes/class-cf7-integration.php:182
+msgid "Snap Photo"
+msgstr ""
+
+#: includes/class-cf7-integration.php:183
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-cf7-integration.php:184
+msgid "Remove"
+msgstr ""
+
+#: includes/class-cf7-integration.php:185
+msgid "Camera not available or access denied. Please choose a file instead."
+msgstr ""
+
+#: includes/class-gemini-client.php:21
+msgid "Gemini API key is not configured. Please configure it in settings or .env."
+msgstr ""
+
+#: includes/class-gemini-client.php:109
+#: includes/class-gemini-client.php:128
+msgid "An upstream Gemini AI error occurred."
+msgstr ""
+
+#: includes/class-gemini-client.php:176
+msgid "The artwork analysis timed out. Please try again."
+msgstr ""
+
+#: includes/class-gemini-client.php:178
+msgid "Failed communicating with Gemini AI: "
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: includes/class-gemini-client.php:186
+#, php-format
+msgid "Gemini returned HTTP status %d."
+msgstr ""
+
+#: includes/class-gemini-client.php:225
+msgid "API key is missing or not configured."
+msgstr ""
+
+#: includes/class-gemini-client.php:289
+msgid "Successfully connected to Gemini API!"
+msgstr ""
+
+#: includes/class-image-handler.php:34
+msgid "No artwork image was provided."
+msgstr ""
+
+#: includes/class-image-handler.php:45
+msgid "Uploaded file could not be verified on the server."
+msgstr ""
+
+#. translators: 1: uploaded file size in megabytes, 2: maximum allowed file size in megabytes
+#: includes/class-image-handler.php:58
+#, php-format
+msgid "The artwork file is too large (%1$s MB). The maximum allowed size is %2$s MB."
+msgstr ""
+
+#: includes/class-image-handler.php:71
+msgid "Unsupported image format. Please upload a JPG, PNG, or WEBP artwork image."
+msgstr ""
+
+#: includes/class-image-handler.php:78
+msgid "Corrupted or invalid image file."
+msgstr ""
+
+#: includes/class-image-handler.php:101
+msgid "Failed to read processed artwork image data."
+msgstr ""
+
+#: includes/class-image-handler.php:234
+msgid "The uploaded file exceeds the allowed upload limit."
+msgstr ""
+
+#: includes/class-image-handler.php:236
+msgid "The file was only partially uploaded. Please try again."
+msgstr ""
+
+#: includes/class-image-handler.php:238
+msgid "No artwork image was selected."
+msgstr ""
+
+#: includes/class-image-handler.php:240
+msgid "Server configuration error: missing temporary folder."
+msgstr ""
+
+#: includes/class-image-handler.php:242
+msgid "Failed to write uploaded file to disk."
+msgstr ""
+
+#: includes/class-image-handler.php:244
+msgid "An unknown upload error occurred."
+msgstr ""
+
+#. translators: 1: maximum allowed request count, 2: rate limit duration in minutes
+#: includes/class-rate-limiter.php:38
+#, php-format
+msgid "Rate limit exceeded. You may only perform %1$d artwork analyses per %2$d minutes. Please wait before trying again."
+msgstr ""
+
+#: includes/class-security.php:68
+msgid "Security verification failed: missing verification token."
+msgstr ""
+
+#: includes/class-security.php:81
+msgid "Security verification service could not be reached."
+msgstr ""
+
+#: includes/class-security.php:86
+msgid "Security verification failed. Please refresh and try again."
+msgstr ""
+
+#: templates/analyzer-output.php:22
+msgid "Analyze Another"
+msgstr ""
+
+#: templates/analyzer-output.php:33
+msgid "Uploaded Artwork Preview"
+msgstr ""
+
+#: templates/analyzer-output.php:43
+msgid "Analysis Progress"
+msgstr ""
+
+#: templates/analyzer-output.php:45
+msgid "Overview"
+msgstr ""
+
+#: templates/analyzer-output.php:46
+msgid "Identification"
+msgstr ""
+
+#: templates/analyzer-output.php:47
+msgid "Subject Matter"
+msgstr ""
+
+#: templates/analyzer-output.php:48
+msgid "Composition"
+msgstr ""
+
+#: templates/analyzer-output.php:49
+msgid "Color Analysis"
+msgstr ""
+
+#: templates/analyzer-output.php:50
+msgid "Technique & Style"
+msgstr ""
+
+#: templates/analyzer-output.php:51
+msgid "Mood & Emotion"
+msgstr ""
+
+#: templates/analyzer-output.php:52
+msgid "Meaning & Context"
+msgstr ""
+
+#: templates/analyzer-output.php:53
+msgid "Summary"
+msgstr ""
+
+#: templates/analyzer-output.php:73
+msgid "Analysis Notice"
+msgstr ""

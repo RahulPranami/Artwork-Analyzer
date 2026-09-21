@@ -1,0 +1,21 @@
+# Environment variables and local configs
+.env
+.env.*
+*.local
+
+# Logs and debug
+*.log
+debug/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Build and dependencies (if any added in future)
+node_modules/
+vendor/
+*.zip
