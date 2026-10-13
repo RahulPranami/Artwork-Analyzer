@@ -18,6 +18,15 @@ class WPA_Art_Analyzer_Rate_Limiter {
             return true;
         }
 
+        // Allow bypassing rate limits during local development or via filter
+        if (apply_filters('wpa_rate_limit_bypass', false)) {
+            return true;
+        }
+
+        if (defined('WP_DEBUG') && WP_DEBUG && in_array(WPA_Art_Analyzer_Security::get_client_ip(), ['127.0.0.1', '::1', 'localhost'], true)) {
+            return true;
+        }
+
         $max_requests = (int)WPA_Art_Analyzer_Settings::get('rate_limit_requests', 3);
         $window       = (int)WPA_Art_Analyzer_Settings::get('rate_limit_window', 600);
 
@@ -54,6 +63,14 @@ class WPA_Art_Analyzer_Rate_Limiter {
             return;
         }
 
+        if (apply_filters('wpa_rate_limit_bypass', false)) {
+            return;
+        }
+
+        if (defined('WP_DEBUG') && WP_DEBUG && in_array(WPA_Art_Analyzer_Security::get_client_ip(), ['127.0.0.1', '::1', 'localhost'], true)) {
+            return;
+        }
+
         $max_requests = (int)WPA_Art_Analyzer_Settings::get('rate_limit_requests', 3);
         $window       = (int)WPA_Art_Analyzer_Settings::get('rate_limit_window', 600);
 
@@ -70,5 +87,17 @@ class WPA_Art_Analyzer_Rate_Limiter {
         } else {
             set_transient($transient_key, $current_count + 1, $window);
         }
+    }
+
+    /**
+     * Reset rate limit transient for client IP.
+     *
+     * @param string|null $ip
+     * @return bool
+     */
+    public static function reset_limit($ip = null) {
+        $ip_hash       = WPA_Art_Analyzer_Security::get_client_ip_hash($ip);
+        $transient_key = 'wpa_rate_' . substr($ip_hash, 0, 32);
+        return delete_transient($transient_key);
     }
 }

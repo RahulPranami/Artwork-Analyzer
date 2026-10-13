@@ -581,8 +581,15 @@
                 turnstile: config.turnstileEnabled ? 'active' : 'disabled',
             });
 
+            const fetchHeaders = {};
+            if (config.nonce) {
+                fetchHeaders['X-WP-Nonce'] = config.nonce;
+            }
+
             const response = await fetch(endpoint, {
                 method: 'POST',
+                headers: fetchHeaders,
+                credentials: 'same-origin',
                 body: formData,
                 signal: currentAbortController.signal,
             });
@@ -927,6 +934,9 @@
         if (el.errorBox) el.errorBox.style.display = 'flex';
         if (el.errorMessage) el.errorMessage.textContent = msg;
         if (el.pipelineStatus) el.pipelineStatus.style.display = 'none';
+        if (el.analyzeBtn && selectedFile) el.analyzeBtn.disabled = false;
+        if (el.replaceBtn) el.replaceBtn.disabled = false;
+        if (el.removeBtn) el.removeBtn.disabled = false;
     }
 
     /**
