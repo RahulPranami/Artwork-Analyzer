@@ -1,108 +1,110 @@
-# AI Vision Providers Comparison & Extension Guide
+# AI Vision, Reverse Search & Web Research Providers Guide
 
-This guide provides an objective analysis of multimodal AI models for visual artwork analysis, comparing Google Gemini with alternative providers, and documents how to add new provider adapters to the plugin.
+This guide covers multimodal vision models, reverse image search providers, and web research providers supported by WP Artwork Analyzer, including how to add new provider adapters.
 
 ---
 
-## 1. Provider Comparison Matrix
+## 1. AI Vision Model Comparison
 
 | Provider & Model | Vision Quality & Nuance | TTFT (Time to First Token) | Streaming Speed | Free Tier / Cost | Best For |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Google Gemini 3.5 Flash** *(Default)* |  Excellent (composition, colors, broad art history) | **~200–350 ms** (Fastest) | **~80 tokens/sec** |  **Free tier** (15 RPM / 1M TPM) | Real-time web streaming, high throughput, zero running cost. |
-| **Google Gemini 2.5 Pro** |  Outstanding (deep iconographic analysis, subtle techniques) | ~800–1200 ms | ~45 tokens/sec | Free tier (2 RPM) / Low cost | In-depth museum-grade academic critiques where 1s initial latency is acceptable. |
-| **Anthropic Claude 3.5 Sonnet** |  **Superior** (unmatched poetic prose, art history vocabulary, emotional depth) | ~400–600 ms | ~60 tokens/sec |  Paid only ($3 / $15 per MTok) | The most expressive, "human-like" art critic tone. |
-| **OpenAI GPT-4o** |  Very Good (precise identification of famous artists, styles) | ~300–500 ms | ~70 tokens/sec |  Paid only ($2.50 / $10 per MTok) | Reliable, standard OpenAI SDK compatibility. |
-| **OpenAI GPT-4o-mini** |  Moderate (good for simple style tags, less nuanced critique) | ~200–300 ms | ~85 tokens/sec |  Ultra low cost ($0.15 / $0.60 per MTok) | Budget high-volume environments. |
-| **Pixtral 12B / LLaVA (Self-Hosted)** |  Fair to Good (depends on quantization and prompt) | ~1000–3000 ms (hardware dependent) | ~20–40 tokens/sec |  100% Free (requires GPU server) | Strict data privacy, zero external cloud dependency. |
+| **Google Gemini 3.5 Flash** *(Default)* | Excellent (composition, colors, broad art history) | **~200–350 ms** (Fastest) | **~80 tokens/sec** | **Free tier** (15 RPM / 1M TPM) | Real-time web streaming, high throughput, zero running cost. |
+| **Google Gemini 2.5 Pro** | Outstanding (deep iconographic analysis, subtle techniques) | ~800–1200 ms | ~45 tokens/sec | Free tier (2 RPM) / Low cost | In-depth museum-grade academic critiques where 1s initial latency is acceptable. |
+| **Anthropic Claude 3.5 Sonnet** | **Superior** (poetic prose, art history vocabulary, emotional depth) | ~400–600 ms | ~60 tokens/sec | Paid only ($3 / $15 per MTok) | Expressive art critic tone. |
+| **OpenAI GPT-4o** | Very Good (precise identification of famous artists, styles) | ~300–500 ms | ~70 tokens/sec | Paid only ($2.50 / $10 per MTok) | Standard OpenAI enterprise agreements. |
 
 ---
 
-## 2. In-Depth Analysis: Is There a Better Provider Than Gemini?
+## 2. Reverse Image Search Providers
 
-### Why Google Gemini was chosen as the primary provider:
-1. **Multimodal Native Design**: Gemini was trained natively on multimodal audio/video/image tokens rather than having an external vision encoder grafted onto a text LLM. It interprets brush strokes, palettes, lighting, and textures with exceptional clarity.
-2. **Streaming Latency**: Gemini Flash delivers tokens in under 300ms, essential for web visitors who expect immediate feedback after submitting a form.
-3. **Accessibility & Free Tier**: Google AI Studio provides 15 requests per minute completely free, making it immediately viable for portfolio sites, art galleries, and students without upfront cloud commitments.
+Reverse image search executes **prior to AI vision analysis** to discover online matching artwork, museum collections, and artist entities.
 
-### When to Consider Anthropic Claude 3.5 Sonnet:
-If your priority is **maximum literary elegance and art criticism depth**:
-- Claude 3.5 Sonnet produces the most evocative, lyrical art critique with sophisticated terminology (e.g. chiaroscuro, impasto, pentimento, spatial tension) and nuanced emotional resonance.
-- *Downside*: Requires a paid Anthropic account and credits upfront.
+| Provider | Mechanism | Image Input | Free Tier / Pricing | Key Strengths |
+| :--- | :--- | :--- | :--- | :--- |
+| **Google Cloud Vision Web Detection** *(Default)* | Official Google Cloud Vision API (`images:annotate` with `WEB_DETECTION`) | Base64 encoded in JSON request (no public URL required) | **1,000 requests/month free**, then $1.50 per 1k requests | Institutional collection detection, exact/partial/similar match ranking, best guess candidate, entity detection. |
+| **SerpApi (Google Lens)** | Commercial SerpApi scraping gateway | Multipart upload or URL | 100 free searches/month, then paid subscriptions | Broad consumer visual search coverage. |
 
-### When to Consider OpenAI GPT-4o:
-- If your agency or organization already standardizes on OpenAI API keys and enterprise agreements.
-
----
-
-## 3. How the Plugin is Architected for Multi-Provider Switching
-
-The plugin's database schema already defines a `provider` column:
-```sql
-provider varchar(32) NOT NULL DEFAULT 'gemini'
-```
-And settings store:
+### How to Add a New Reverse Search Provider
+Implement `WPA_Art_Analyzer_Reverse_Search_Provider`:
 ```php
-'ai_provider' => 'gemini' // expandable to 'openai', 'claude'
+<?php
+defined('ABSPATH') || exit;
+
+class My_Custom_Reverse_Search implements WPA_Art_Analyzer_Reverse_Search_Provider {
+    public function get_id(): string { return 'my_provider'; }
+    public function get_name(): string { return 'My Custom Provider'; }
+    public function is_configured(): bool { return !empty(get_option('my_key')); }
+
+    public function search(array $image_data) {
+        // Return normalized array:
+        return [
+            'provider'   => 'my_provider',
+            'best_guess' => 'Artwork Title Candidate',
+            'entities'   => [['description' => 'Artist Name', 'score' => 9.5]],
+            'matches'    => [
+                [
+                    'title'         => 'Museum Record',
+                    'url'           => 'https://museum.org/...',
+                    'thumbnail_url' => 'https://...',
+                    'domain'        => 'museum.org',
+                    'match_type'    => 'exact', // exact, partial, or similar
+                    'is_reputable'  => true,
+                    'snippet'       => 'Exhibition record...',
+                ]
+            ],
+            'raw_count'  => 1,
+        ];
+    }
+
+    public function test_connection(): array {
+        return ['success' => true, 'message' => 'Connected', 'latency' => 120];
+    }
+}
 ```
+Register the provider in `WPA_Art_Analyzer_Reverse_Search_Factory::get_providers()`.
 
-### Adding an OpenAI or Claude Provider Adapter
+---
 
-To add another provider (e.g. OpenAI GPT-4o):
+## 3. Web Research Providers
 
-1. **Create Adapter Class**:
-   Create `includes/class-openai-client.php`:
-   ```php
-   <?php
-   defined('ABSPATH') || exit;
+Web research synthesizes encyclopedic records and provenance history from detected art entities.
 
-   class WPA_Art_Analyzer_OpenAI_Client {
-       public static function stream_critique($image_path, $prompt, $on_chunk) {
-           $api_key = WPA_Art_Analyzer_Settings::get('openai_api_key');
-           $base64 = base64_encode(file_get_contents($image_path));
+| Provider | Source Data | Credentials Required | Cost | Best For |
+| :--- | :--- | :--- | :--- | :--- |
+| **Wikipedia & Wikimedia REST API** *(Default)* | Wikipedia OpenSearch & page summary REST API | **None** (100% Free out-of-the-box) | $0.00 / Unlimited fair use | Verified artist biographies, art movement overviews, museum ownership. |
+| **Google Custom Search JSON API** | Programmable Search Engine | API Key + Search Engine ID (cx) | 100 free queries/day | Broader web coverage across gallery catalogues. |
+| **Tavily AI Search** | Realtime agentic research API | Tavily API Key | 1,000 free searches/month | Fact-focused excerpts optimized for LLM contexts. |
 
-           $payload = json_encode([
-               'model' => 'gpt-4o',
-               'stream' => true,
-               'messages' => [
-                   [
-                       'role' => 'user',
-                       'content' => [
-                           ['type' => 'text', 'text' => $prompt],
-                           ['type' => 'image_url', 'image_url' => ['url' => "data:image/jpeg;base64,{$base64}"]]
-                       ]
-                   ]
-               ]
-           ]);
+### How to Add a New Web Research Provider
+Implement `WPA_Art_Analyzer_Web_Research_Provider`:
+```php
+<?php
+defined('ABSPATH') || exit;
 
-           $ch = curl_init('https://api.openai.com/v1/chat/completions');
-           curl_setopt_array($ch, [
-               CURLOPT_POST => true,
-               CURLOPT_POSTFIELDS => $payload,
-               CURLOPT_HTTPHEADER => [
-                   'Content-Type: application/json',
-                   'Authorization: Bearer ' . $api_key,
-               ],
-               CURLOPT_WRITEFUNCTION => function($ch, $chunk) use ($on_chunk) {
-                   // Parse OpenAI "data: {...}" SSE lines and invoke $on_chunk($text)
-                   return strlen($chunk);
-               }
-           ]);
-           curl_exec($ch);
-           curl_close($ch);
-       }
-   }
-   ```
+class My_Custom_Web_Research implements WPA_Art_Analyzer_Web_Research_Provider {
+    public function get_id(): string { return 'custom_research'; }
+    public function get_name(): string { return 'Custom Research Provider'; }
+    public function is_configured(): bool { return true; }
 
-2. **Route in Controller**:
-   In `includes/class-rest-controller.php`, inspect `WPA_Art_Analyzer_Settings::get('ai_provider')`:
-   ```php
-   $provider = WPA_Art_Analyzer_Settings::get('ai_provider', 'gemini');
-   if ($provider === 'openai') {
-       WPA_Art_Analyzer_OpenAI_Client::stream_critique(...);
-   } else {
-       WPA_Art_Analyzer_Gemini_Client::stream_critique(...);
-   }
-   ```
+    public function research(string $query, array $context = []) {
+        return [
+            'provider' => 'custom_research',
+            'query'    => $query,
+            'findings' => [
+                [
+                    'title'   => 'Documented Record',
+                    'url'     => 'https://example.org/...',
+                    'domain'  => 'example.org',
+                    'snippet' => 'Extracted excerpt...',
+                    'topic'   => 'history',
+                ]
+            ],
+        ];
+    }
 
-3. **Add Field in Admin View**:
-   Add the provider dropdown and API key field in `admin/views/settings.php`.
+    public function test_connection(): array {
+        return ['success' => true, 'message' => 'Operational', 'latency' => 95];
+    }
+}
+```
+Register the provider in `WPA_Art_Analyzer_Web_Research_Factory::get_providers()`.

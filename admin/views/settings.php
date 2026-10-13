@@ -1,15 +1,23 @@
 <?php
 /**
  * Admin settings view.
+ *
+ * @package WP_Artwork_Analyzer
  */
 
 defined('ABSPATH') || exit;
 
-$settings = WPA_Art_Analyzer_Settings::get_all();
+$settings   = WPA_Art_Analyzer_Settings::get_all();
 $active_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'ai-provider';
-$cf7_forms = WPA_Art_Analyzer_CF7_Integration::get_forms_list();
-$env_key = WPA_Art_Analyzer_Settings::get_gemini_api_key();
+$cf7_forms  = WPA_Art_Analyzer_CF7_Integration::get_forms_list();
+$env_key    = WPA_Art_Analyzer_Settings::get_gemini_api_key();
 $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
+
+$vision_key = WPA_Art_Analyzer_Google_Vision_Search::get_api_key();
+$is_vision_env = defined('WPA_GOOGLE_VISION_API_KEY') || defined('GOOGLE_VISION_API_KEY') || getenv('GOOGLE_VISION_API_KEY') || !empty($_ENV['GOOGLE_VISION_API_KEY']);
+
+$active_rev_provider = WPA_Art_Analyzer_Reverse_Search_Factory::get_active_provider();
+$active_web_provider = WPA_Art_Analyzer_Web_Research_Factory::get_active_provider();
 ?>
 
 <div class="wrap wpa-admin-wrap">
@@ -18,12 +26,14 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
     <?php settings_errors('wpa_messages'); ?>
 
     <nav class="nav-tab-wrapper wpa-nav-tabs">
-        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=ai-provider')); ?>" class="nav-tab <?php echo $active_tab === 'ai-provider' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('AI Provider', 'wp-artwork-analyzer'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=ai-provider')); ?>" class="nav-tab <?php echo $active_tab === 'ai-provider' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('AI Vision Provider', 'wp-artwork-analyzer'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=reverse-search')); ?>" class="nav-tab <?php echo $active_tab === 'reverse-search' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Reverse Image Search', 'wp-artwork-analyzer'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=web-research')); ?>" class="nav-tab <?php echo $active_tab === 'web-research' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Web Research', 'wp-artwork-analyzer'); ?></a>
         <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=analysis')); ?>" class="nav-tab <?php echo $active_tab === 'analysis' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Analysis Prompt', 'wp-artwork-analyzer'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=cf7')); ?>" class="nav-tab <?php echo $active_tab === 'cf7' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Contact Form 7', 'wp-artwork-analyzer'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=cf7')); ?>" class="nav-tab <?php echo $active_tab === 'cf7' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Contact Form 7 & Shortcode', 'wp-artwork-analyzer'); ?></a>
         <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=security')); ?>" class="nav-tab <?php echo $active_tab === 'security' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Security & Limits', 'wp-artwork-analyzer'); ?></a>
         <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=storage')); ?>" class="nav-tab <?php echo $active_tab === 'storage' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Storage & Privacy', 'wp-artwork-analyzer'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=diagnostics')); ?>" class="nav-tab <?php echo $active_tab === 'diagnostics' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Diagnostics & Streaming Test', 'wp-artwork-analyzer'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=wp-artwork-analyzer&tab=diagnostics')); ?>" class="nav-tab <?php echo $active_tab === 'diagnostics' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Diagnostics & Testing', 'wp-artwork-analyzer'); ?></a>
     </nav>
 
     <div class="wpa-admin-container">
@@ -35,12 +45,12 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
             <?php if ($active_tab === 'ai-provider') : ?>
                 <table class="form-table" role="presentation">
                     <tr>
-                        <th scope="row"><label for="ai_provider"><?php esc_html_e('AI Provider', 'wp-artwork-analyzer'); ?></label></th>
+                        <th scope="row"><label for="ai_provider"><?php esc_html_e('AI Vision Provider', 'wp-artwork-analyzer'); ?></label></th>
                         <td>
                             <select name="ai_provider" id="ai_provider">
                                 <option value="gemini" <?php selected($settings['ai_provider'], 'gemini'); ?>>Google Gemini</option>
                             </select>
-                            <p class="description"><?php esc_html_e('Uses Google Gemini Vision with streaming content generation.', 'wp-artwork-analyzer'); ?></p>
+                            <p class="description"><?php esc_html_e('Uses Google Gemini Vision with streaming SSE content generation.', 'wp-artwork-analyzer'); ?></p>
                         </td>
                     </tr>
 
@@ -90,13 +100,91 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                     </tr>
                 </table>
 
+            <?php elseif ($active_tab === 'reverse-search') : ?>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label for="reverse_search_provider"><?php esc_html_e('Reverse Search Provider', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <select name="reverse_search_provider" id="reverse_search_provider">
+                                <option value="google_vision" <?php selected($settings['reverse_search_provider'], 'google_vision'); ?>><?php esc_html_e('Google Cloud Vision (Web Detection) — Recommended', 'wp-artwork-analyzer'); ?></option>
+                                <option value="serpapi" <?php selected($settings['reverse_search_provider'], 'serpapi'); ?>><?php esc_html_e('SerpApi (Google Lens / Reverse Search)', 'wp-artwork-analyzer'); ?></option>
+                                <option value="none" <?php selected($settings['reverse_search_provider'], 'none'); ?>><?php esc_html_e('Disabled (Visual observation only)', 'wp-artwork-analyzer'); ?></option>
+                            </select>
+                            <p class="description"><?php esc_html_e('Searches the web for visually matching or identical artwork before AI critique.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="google_vision_api_key"><?php esc_html_e('Google Cloud Vision API Key', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <?php if ($is_vision_env) : ?>
+                                <div class="wpa-notice-env">
+                                    <span class="dashicons dashicons-yes-alt"></span>
+                                    <strong><?php esc_html_e('Active key detected from environment (.env / constant)', 'wp-artwork-analyzer'); ?>:</strong>
+                                    <code><?php echo esc_html(substr($vision_key, 0, 8) . '...' . substr($vision_key, -8)); ?></code>
+                                </div>
+                            <?php endif; ?>
+                            <input type="password" name="google_vision_api_key" id="google_vision_api_key" value="<?php echo esc_attr($settings['google_vision_api_key']); ?>" class="regular-text" placeholder="<?php echo $is_vision_env ? esc_attr__('Configured via .env (leave blank or override)', 'wp-artwork-analyzer') : esc_attr__('AIza... (or shares Gemini Cloud API key)', 'wp-artwork-analyzer'); ?>" />
+                            <p class="description"><?php esc_html_e('Uses Cloud Vision Web Detection (1,000 free requests/month, base64 payload). If blank, automatically attempts to reuse your Google API key.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="serpapi_api_key"><?php esc_html_e('SerpApi Key (Optional)', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <input type="password" name="serpapi_api_key" id="serpapi_api_key" value="<?php echo esc_attr($settings['serpapi_api_key']); ?>" class="regular-text" placeholder="api_key..." />
+                            <p class="description"><?php esc_html_e('Required only if SerpApi is selected as your reverse search provider.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+
+            <?php elseif ($active_tab === 'web-research') : ?>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label for="web_research_provider"><?php esc_html_e('Web Research Provider', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <select name="web_research_provider" id="web_research_provider">
+                                <option value="wikipedia" <?php selected($settings['web_research_provider'], 'wikipedia'); ?>><?php esc_html_e('Wikipedia & Wikimedia (Built-in, 100% Free, No Key Required)', 'wp-artwork-analyzer'); ?></option>
+                                <option value="google_search" <?php selected($settings['web_research_provider'], 'google_search'); ?>><?php esc_html_e('Google Custom Search JSON API', 'wp-artwork-analyzer'); ?></option>
+                                <option value="tavily" <?php selected($settings['web_research_provider'], 'tavily'); ?>><?php esc_html_e('Tavily AI Search API', 'wp-artwork-analyzer'); ?></option>
+                                <option value="none" <?php selected($settings['web_research_provider'], 'none'); ?>><?php esc_html_e('Disabled', 'wp-artwork-analyzer'); ?></option>
+                            </select>
+                            <p class="description"><?php esc_html_e('Collects authoritative museum, artist, provenance, and art movement records based on reverse search entities.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="google_search_api_key"><?php esc_html_e('Google Custom Search API Key', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <input type="password" name="google_search_api_key" id="google_search_api_key" value="<?php echo esc_attr($settings['google_search_api_key']); ?>" class="regular-text" placeholder="AIza..." />
+                            <p class="description"><?php esc_html_e('Required if Google Custom Search is chosen (100 free queries/day).', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="google_search_cx"><?php esc_html_e('Google Search Engine ID (cx)', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <input type="text" name="google_search_cx" id="google_search_cx" value="<?php echo esc_attr($settings['google_search_cx']); ?>" class="regular-text" placeholder="0123456789..." />
+                            <p class="description"><?php esc_html_e('Custom Search Engine ID from programmablesearchengine.google.com.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="tavily_api_key"><?php esc_html_e('Tavily API Key', 'wp-artwork-analyzer'); ?></label></th>
+                        <td>
+                            <input type="password" name="tavily_api_key" id="tavily_api_key" value="<?php echo esc_attr($settings['tavily_api_key']); ?>" class="regular-text" placeholder="tvly-..." />
+                            <p class="description"><?php esc_html_e('Required only if Tavily is selected as research provider.', 'wp-artwork-analyzer'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+
             <?php elseif ($active_tab === 'analysis') : ?>
                 <table class="form-table" role="presentation">
                     <tr>
                         <th scope="row"><label for="system_prompt"><?php esc_html_e('Master System Instruction', 'wp-artwork-analyzer'); ?></label></th>
                         <td>
                             <textarea name="system_prompt" id="system_prompt" rows="18" class="large-text code"><?php echo esc_textarea($settings['system_prompt']); ?></textarea>
-                            <p class="description"><?php esc_html_e('Guides how Gemini evaluates the artwork and formats markdown sections.', 'wp-artwork-analyzer'); ?></p>
+                            <p class="description"><?php esc_html_e('Directs Gemini to structure critique into Category A (Visual Observations), Category B (Research-Supported Findings with source links), and Category C (Uncertain Conclusions).', 'wp-artwork-analyzer'); ?></p>
                         </td>
                     </tr>
 
@@ -104,7 +192,7 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                         <th scope="row"><label for="max_dimension"><?php esc_html_e('Max Image Dimension (px)', 'wp-artwork-analyzer'); ?></label></th>
                         <td>
                             <input type="number" name="max_dimension" id="max_dimension" value="<?php echo esc_attr($settings['max_dimension']); ?>" class="small-text" min="512" max="4096" step="128" />
-                            <p class="description"><?php esc_html_e('Uploaded images larger than this width/height are automatically resized before sending to Gemini to save bandwidth and improve latency (default 2048px).', 'wp-artwork-analyzer'); ?></p>
+                            <p class="description"><?php esc_html_e('Uploaded images larger than this width/height are automatically downscaled before sending to Vision / Gemini to optimize latency and save bandwidth (default 2048px).', 'wp-artwork-analyzer'); ?></p>
                         </td>
                     </tr>
                 </table>
@@ -132,7 +220,7 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                         <th scope="row"><?php esc_html_e('Shortcode Usage', 'wp-artwork-analyzer'); ?></th>
                         <td>
                             <code>[wp_artwork_analyzer]</code>
-                            <p class="description"><?php esc_html_e('Optional: insert this shortcode on any page to explicitly render the analyzer container.', 'wp-artwork-analyzer'); ?></p>
+                            <p class="description"><?php esc_html_e('Renders the standalone artwork analyzer and launcher drawer on any page.', 'wp-artwork-analyzer'); ?></p>
                         </td>
                     </tr>
                 </table>
@@ -199,7 +287,7 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                         <td>
                             <label>
                                 <input type="checkbox" name="save_images" value="1" <?php checked($settings['save_images'], 1); ?> />
-                                <?php esc_html_e('Retain uploaded artworks permanently in uploads/artwork-analyses (Default: Off; temporary files are deleted after Gemini analysis)', 'wp-artwork-analyzer'); ?>
+                                <?php esc_html_e('Retain uploaded artworks permanently in uploads/artwork-analyses (Default: Off; temporary files are deleted after analysis)', 'wp-artwork-analyzer'); ?>
                             </label>
                         </td>
                     </tr>
@@ -212,8 +300,8 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
         <?php else : ?>
             <!-- Diagnostics Tab -->
             <div class="wpa-diagnostics-container">
-                <h2><?php esc_html_e('System Environment Diagnostics', 'wp-artwork-analyzer'); ?></h2>
-                <p><?php esc_html_e('Verify that your WordPress host supports realtime streaming and external AI connections.', 'wp-artwork-analyzer'); ?></p>
+                <h2><?php esc_html_e('System Environment & API Diagnostics', 'wp-artwork-analyzer'); ?></h2>
+                <p><?php esc_html_e('Verify that your WordPress environment and external AI/search APIs are operational.', 'wp-artwork-analyzer'); ?></p>
 
                 <div class="wpa-diag-grid">
                     <div class="wpa-diag-card">
@@ -227,12 +315,12 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                     </div>
 
                     <div class="wpa-diag-card">
-                        <div class="wpa-diag-card-title"><?php esc_html_e('WordPress & Integrations', 'wp-artwork-analyzer'); ?></div>
+                        <div class="wpa-diag-card-title"><?php esc_html_e('AI & Research Providers', 'wp-artwork-analyzer'); ?></div>
                         <ul class="wpa-diag-list">
-                            <li><span>REST API:</span> <strong><?php echo esc_url(rest_url('art-analyzer/v1/')); ?></strong> <span class="wpa-badge-ok">✓</span></li>
-                            <li><span>Contact Form 7:</span> <strong><?php echo defined('WPCF7_VERSION') ? 'Active (v' . WPCF7_VERSION . ')' : 'Not detected'; ?></strong> <?php echo defined('WPCF7_VERSION') ? '<span class="wpa-badge-ok">✓</span>' : '<span class="wpa-badge-warn">⚠</span>'; ?></li>
-                            <li><span>Gemini API Key:</span> <strong><?php echo !empty($env_key) ? ($is_from_env ? 'Configured (.env)' : 'Configured (Settings)') : 'Missing'; ?></strong> <?php echo !empty($env_key) ? '<span class="wpa-badge-ok">✓</span>' : '<span class="wpa-badge-err">✕</span>'; ?></li>
-                            <li><span>Selected Model:</span> <strong><?php echo esc_html($settings['model']); ?></strong></li>
+                            <li><span>Gemini Vision:</span> <strong><?php echo !empty($env_key) ? 'Configured' : 'Missing Key'; ?></strong> <?php echo !empty($env_key) ? '<span class="wpa-badge-ok">✓</span>' : '<span class="wpa-badge-err">✕</span>'; ?></li>
+                            <li><span>Model:</span> <strong><?php echo esc_html($settings['model']); ?></strong></li>
+                            <li><span>Reverse Search:</span> <strong><?php echo $active_rev_provider ? esc_html($active_rev_provider->get_name()) : 'Disabled'; ?></strong> <?php echo ($active_rev_provider && $active_rev_provider->is_configured()) ? '<span class="wpa-badge-ok">✓</span>' : ($active_rev_provider ? '<span class="wpa-badge-warn">⚠</span>' : ''); ?></li>
+                            <li><span>Web Research:</span> <strong><?php echo $active_web_provider ? esc_html($active_web_provider->get_name()) : 'Disabled'; ?></strong> <?php echo ($active_web_provider && $active_web_provider->is_configured()) ? '<span class="wpa-badge-ok">✓</span>' : ($active_web_provider ? '<span class="wpa-badge-warn">⚠</span>' : ''); ?></li>
                         </ul>
                     </div>
 
@@ -252,11 +340,19 @@ $is_from_env = WPA_Art_Analyzer_Settings::is_api_key_from_env();
                     <div class="wpa-btn-group">
                         <button type="button" class="button button-primary" id="wpa-run-stream-test">
                             <span class="dashicons dashicons-update" style="vertical-align: middle;"></span>
-                            <?php esc_html_e('Test Streaming (Chunk Latency Test)', 'wp-artwork-analyzer'); ?>
+                            <?php esc_html_e('Test Streaming (Latency Test)', 'wp-artwork-analyzer'); ?>
                         </button>
                         <button type="button" class="button button-secondary" id="wpa-run-gemini-test">
                             <span class="dashicons dashicons-cloud" style="vertical-align: middle;"></span>
                             <?php esc_html_e('Test Gemini Connection', 'wp-artwork-analyzer'); ?>
+                        </button>
+                        <button type="button" class="button button-secondary" id="wpa-run-reverse-search-test">
+                            <span class="dashicons dashicons-format-image" style="vertical-align: middle;"></span>
+                            <?php esc_html_e('Test Reverse Search Provider', 'wp-artwork-analyzer'); ?>
+                        </button>
+                        <button type="button" class="button button-secondary" id="wpa-run-web-research-test">
+                            <span class="dashicons dashicons-search" style="vertical-align: middle;"></span>
+                            <?php esc_html_e('Test Web Research Provider', 'wp-artwork-analyzer'); ?>
                         </button>
                     </div>
 

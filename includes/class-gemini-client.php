@@ -13,9 +13,10 @@ class WPA_Art_Analyzer_Gemini_Client {
      * @param array $image_data Array with 'mimeType' and 'data' (base64).
      * @param callable $on_text_chunk Callback invoked when text is generated: function(string $text): void
      * @param callable $on_error Callback invoked on error: function(string $code, string $message): void
+     * @param string $research_context Optional structured external research context from reverse search and web research.
      * @return bool True if stream completed normally, false otherwise.
      */
-    public static function stream_analysis($image_data, $on_text_chunk, $on_error) {
+    public static function stream_analysis($image_data, $on_text_chunk, $on_error, $research_context = '') {
         $api_key = WPA_Art_Analyzer_Settings::get_gemini_api_key();
         if (empty($api_key)) {
             call_user_func($on_error, 'GEMINI_AUTH_ERROR', __('Gemini API key is not configured. Please configure it in settings or .env.', 'wp-artwork-analyzer'));
@@ -30,6 +31,11 @@ class WPA_Art_Analyzer_Gemini_Client {
         // Construct request endpoint with alt=sse
         $clean_model = trim(str_replace('models/', '', $model));
         $endpoint    = "https://generativelanguage.googleapis.com/v1beta/models/{$clean_model}:streamGenerateContent?alt=sse";
+
+        $user_prompt_text = 'Please provide a comprehensive visual analysis of this artwork according to the instructions provided.';
+        if (!empty($research_context)) {
+            $user_prompt_text .= "\n\n" . $research_context;
+        }
 
         // Build payload
         $payload = [
@@ -49,7 +55,7 @@ class WPA_Art_Analyzer_Gemini_Client {
                             ]
                         ],
                         [
-                            'text' => 'Please provide a comprehensive visual analysis of this artwork according to the instructions provided.'
+                            'text' => $user_prompt_text
                         ]
                     ]
                 ]
@@ -61,6 +67,16 @@ class WPA_Art_Analyzer_Gemini_Client {
         ];
 
         $json_payload = wp_json_encode($payload);
+
+        $start_gemini = microtime(true);
+        WPA_Art_Analyzer_Logger::log_request('GEMINI_STREAM', $endpoint, [
+            'model'           => $clean_model,
+            'temperature'     => $temperature,
+            'maxOutputTokens' => $max_tokens,
+            'image_mime'      => $image_data['mimeType'],
+            'payload_size'    => strlen($json_payload),
+            'has_research'    => !empty($research_context),
+        ]);
 
         $curl = curl_init($endpoint);
 
@@ -160,11 +176,18 @@ class WPA_Art_Analyzer_Gemini_Client {
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $curl_errno = curl_errno($curl);
         $curl_error = curl_error($curl);
+        $gemini_latency = (microtime(true) - $start_gemini) * 1000;
 
         if (PHP_VERSION_ID < 80000 && is_resource($curl)) {
             curl_close($curl);
         }
         unset($curl);
+
+        WPA_Art_Analyzer_Logger::log_response('GEMINI_STREAM', (int)$http_code, [
+            'total_text_emitted' => $total_text_emitted,
+            'curl_errno'         => $curl_errno,
+            'had_error'          => $had_error,
+        ], $gemini_latency);
 
         // Check if aborted by client
         if (connection_aborted() || connection_status() !== CONNECTION_NORMAL) {

@@ -7,18 +7,27 @@ This guide covers local development, testing, packaging for WordPress.org, and v
 ## 1. Local Development Setup
 
 ### Requirements
-- WordPress 6.0 or later
-- PHP 8.0 or later (tested up to PHP 8.5)
+- WordPress 6.0 or later (tested up to 7.1)
+- PHP 8.0 or later (tested on PHP 8.5)
 - PHP cURL and GD or Imagick extensions enabled
-- Contact Form 7 plugin installed and activated
-- Google Gemini API key (obtain free at [Google AI Studio](https://aistudio.google.com/))
+- Contact Form 7 plugin installed and activated (optional if using standalone shortcode)
+- Google Gemini API key (free at [Google AI Studio](https://aistudio.google.com/))
+- (Optional) Google Cloud Vision API key for reverse image search
 
 ### Configuration Priority
-The plugin detects your Gemini API key in the following order:
-1. `wp-config.php`: `define('WPA_GEMINI_API_KEY', 'AIza...');`
-2. Environment variable: `export GEMINI_API_KEY="AIza..."`
-3. Root `.env` file: `GEMINI_API_KEY=AIza...`
-4. WordPress Admin: **WP Admin -> Artwork Analyzer -> AI Provider**
+The plugin automatically discovers keys in the following priority order:
+1. `wp-config.php`:
+   - `define('WPA_GEMINI_API_KEY', 'AIza...');`
+   - `define('WPA_GOOGLE_VISION_API_KEY', 'AIza...');`
+2. Environment variables:
+   - `export GEMINI_API_KEY="AIza..."`
+   - `export GOOGLE_VISION_API_KEY="AIza..."`
+3. Root `.env` file in WordPress directory:
+   ```env
+   GEMINI_API_KEY=AIza...
+   GOOGLE_VISION_API_KEY=AIza...
+   ```
+4. WordPress Admin: **WP Admin -> Artwork Analyzer**
 
 ---
 
@@ -36,45 +45,68 @@ The plugin detects your Gemini API key in the following order:
 
 ---
 
-## 3. Useful WP-CLI Commands
+## 3. Automated Testing & Verification
 
-### Re-generate Translation POT File
-Run whenever translatable strings are added or modified:
+### Running the Test Suite
+The repository includes an automated verification test suite covering providers, factories, normalization, prompt security, HTML sanitization, and REST routes:
+
 ```bash
-wp i18n make-pot wp-content/plugins/wp-artwork-analyzer wp-content/plugins/wp-artwork-analyzer/languages/wp-artwork-analyzer.pot
+wp eval-file /home/rahul/public_html/artpress/wp-content/plugins/wp-artwork-analyzer/tests/run-tests.php --path=/home/rahul/public_html/artpress
 ```
 
-### Check PHP Syntax
+### Check PHP Syntax Across All Files
 ```bash
 find wp-content/plugins/wp-artwork-analyzer/ -name "*.php" -exec php -l {} \;
 ```
 
-### Inspect Database Table
+### Re-generate Translation POT File
 ```bash
-wp db query "DESCRIBE wp_artwork_analyses;"
-wp db query "SELECT id, uuid, status, provider, created_at FROM wp_artwork_analyses ORDER BY id DESC LIMIT 10;"
+wp i18n make-pot wp-content/plugins/wp-artwork-analyzer wp-content/plugins/wp-artwork-analyzer/languages/wp-artwork-analyzer.pot --domain=wp-artwork-analyzer --path=/home/rahul/public_html/artpress
 ```
 
 ---
 
-## 4. Building the WordPress.org Distribution ZIP
+## 4. Testing Endpoints Locally
 
-To generate a clean production archive ready for upload to WordPress.org (`/wp-content/plugins/wp-artwork-analyzer.zip`):
+### Test Health Endpoint
+```bash
+curl -s http://localhost/wp-json/art-analyzer/v1/health | jq .
+```
+
+### Test Web Research Endpoint Directly
+```bash
+curl -s -X POST http://localhost/wp-json/art-analyzer/v1/web-research \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Vincent van Gogh The Starry Night"}' | jq .
+```
+
+### Test Reverse Image Search Endpoint
+```bash
+curl -s -X POST http://localhost/wp-json/art-analyzer/v1/reverse-search \
+  -F "artwork=@path/to/artwork.jpg" | jq .
+```
+
+---
+
+## 5. Building the WordPress.org Distribution ZIP
+
+To generate a clean production archive ready for deployment (`/wp-content/plugins/wp-artwork-analyzer.zip`):
 
 ```bash
 php -r '
 $zip = new ZipArchive();
-$zipPath = __DIR__ . "/wp-content/plugins/wp-artwork-analyzer.zip";
+$zipPath = dirname(__DIR__) . "/wp-artwork-analyzer.zip";
 if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
     die("Failed to create zip file\n");
 }
-$source = realpath(__DIR__ . "/wp-content/plugins/wp-artwork-analyzer");
+$source = realpath(__DIR__);
 $files = new RecursiveIteratorIterator(
     new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
     RecursiveIteratorIterator::SELF_FIRST
 );
 foreach ($files as $file) {
     $filePath = $file->getRealPath();
+    if (str_contains($filePath, "/.git/") || str_contains($filePath, "/tests/")) continue;
     $relativePath = "wp-artwork-analyzer/" . substr($filePath, strlen($source) + 1);
     if ($file->isDir()) {
         $zip->addEmptyDir($relativePath);
@@ -86,19 +118,3 @@ $zip->close();
 echo "Generated $zipPath\n";
 '
 ```
-
----
-
-## 5. Troubleshooting & Diagnostics
-
-### Reverse Proxy Buffering
-If the AI critique appears all at once instead of streaming word-by-word:
-1. Open **WP Admin -> Artwork Analyzer -> Diagnostics**.
-2. Click **Run Latency Test**.
-3. If chunk timestamps arrive simultaneously, your web server or proxy is buffering responses:
-   - **NGINX**: Set `proxy_buffering off;` or `fastcgi_buffering off;`.
-   - **Cloudflare**: Disable "Rocket Loader" and buffer features for `/wp-json/art-analyzer/v1/analyze`.
-   - **Apache**: Ensure `mod_deflate` is not aggressively compressing `text/event-stream`.
-
-### Read-Only Filesystem Errors (systemd)
-On Linux servers running Apache under systemd with `ProtectHome=read-only`, PHP cannot write temporary uploads to `/home/user/public_html/...`. The plugin automatically falls back to `get_temp_dir()` (`/tmp`) to ensure file uploads succeed seamlessly.

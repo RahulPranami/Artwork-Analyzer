@@ -59,10 +59,21 @@ class WPA_Art_Analyzer_Plugin {
      * Require all component classes.
      */
     public static function load_dependencies() {
+        require_once WPA_ART_ANALYZER_PATH . 'includes/class-logger.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-settings.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-security.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-rate-limiter.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-image-handler.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/interfaces/interface-reverse-search-provider.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/interfaces/interface-web-research-provider.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/providers/class-google-vision-search.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/providers/class-serpapi-search.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/providers/class-wikipedia-research.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/providers/class-google-custom-search.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/providers/class-tavily-research.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/class-reverse-search-factory.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/class-web-research-factory.php';
+        require_once WPA_ART_ANALYZER_PATH . 'includes/class-research-orchestrator.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-gemini-client.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-rest-controller.php';
         require_once WPA_ART_ANALYZER_PATH . 'includes/class-cf7-integration.php';

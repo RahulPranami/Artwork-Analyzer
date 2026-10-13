@@ -117,6 +117,7 @@ class WPA_Art_Analyzer_Security {
             'pre'    => ['class' => true],
             'span'   => ['class' => true],
             'div'    => ['class' => true],
+            'a'      => ['href' => true, 'title' => true, 'target' => true, 'rel' => true, 'class' => true],
             'table'  => ['class' => true],
             'thead'  => [],
             'tbody'  => [],

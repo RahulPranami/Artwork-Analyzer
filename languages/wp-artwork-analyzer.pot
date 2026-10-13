@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Artwork Analyzer 1.0.1\n"
+"Project-Id-Version: WP Artwork Analyzer 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-artwork-analyzer\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T16:55:13+00:00\n"
+"POT-Creation-Date: 2026-10-13T12:07:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-artwork-analyzer\n"
@@ -37,6 +37,7 @@ msgstr ""
 
 #: admin/class-admin.php:24
 #: admin/class-admin.php:25
+#: templates/analyzer-drawer.php:21
 msgid "Artwork Analyzer"
 msgstr ""
 
@@ -44,322 +45,515 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: admin/class-admin.php:100
+#: admin/class-admin.php:107
 msgid "Settings saved successfully."
 msgstr ""
 
-#: admin/views/settings.php:16
+#: admin/views/settings.php:24
 msgid "Artwork Analyzer Settings"
 msgstr ""
 
-#: admin/views/settings.php:21
-#: admin/views/settings.php:38
-msgid "AI Provider"
+#: admin/views/settings.php:29
+#: admin/views/settings.php:48
+msgid "AI Vision Provider"
 msgstr ""
 
-#: admin/views/settings.php:22
+#: admin/views/settings.php:30
+msgid "Reverse Image Search"
+msgstr ""
+
+#: admin/views/settings.php:31
+msgid "Web Research"
+msgstr ""
+
+#: admin/views/settings.php:32
 msgid "Analysis Prompt"
 msgstr ""
 
-#: admin/views/settings.php:23
-msgid "Contact Form 7"
+#: admin/views/settings.php:33
+msgid "Contact Form 7 & Shortcode"
 msgstr ""
 
-#: admin/views/settings.php:24
+#: admin/views/settings.php:34
 msgid "Security & Limits"
 msgstr ""
 
-#: admin/views/settings.php:25
+#: admin/views/settings.php:35
 msgid "Storage & Privacy"
 msgstr ""
 
-#: admin/views/settings.php:26
-msgid "Diagnostics & Streaming Test"
-msgstr ""
-
-#: admin/views/settings.php:43
-msgid "Uses Google Gemini Vision with streaming content generation."
-msgstr ""
-
-#: admin/views/settings.php:48
-msgid "Gemini API Key"
+#: admin/views/settings.php:36
+msgid "Diagnostics & Testing"
 msgstr ""
 
 #: admin/views/settings.php:53
-msgid "Active API Key detected from environment (.env file / constant)"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "Configured via .env (leave blank or enter custom override)"
+msgid "Uses Google Gemini Vision with streaming SSE content generation."
 msgstr ""
 
 #: admin/views/settings.php:58
-msgid "Your Gemini API key remains strictly server-side and is never sent to the browser."
+msgid "Gemini API Key"
 msgstr ""
 
 #: admin/views/settings.php:63
+msgid "Active API Key detected from environment (.env file / constant)"
+msgstr ""
+
+#: admin/views/settings.php:67
+msgid "Configured via .env (leave blank or enter custom override)"
+msgstr ""
+
+#: admin/views/settings.php:68
+msgid "Your Gemini API key remains strictly server-side and is never sent to the browser."
+msgstr ""
+
+#: admin/views/settings.php:73
 msgid "Gemini Model"
 msgstr ""
 
-#: admin/views/settings.php:72
+#: admin/views/settings.php:82
 msgid "Select which multimodal vision model processes the artwork."
 msgstr ""
 
-#: admin/views/settings.php:77
+#: admin/views/settings.php:87
 msgid "Max Output Tokens"
 msgstr ""
 
-#: admin/views/settings.php:80
+#: admin/views/settings.php:90
 msgid "Maximum tokens generated in the streaming response (default 2048)."
 msgstr ""
 
-#: admin/views/settings.php:85
+#: admin/views/settings.php:95
 msgid "Temperature"
 msgstr ""
 
-#: admin/views/settings.php:88
+#: admin/views/settings.php:98
 msgid "Controls creativity (default 0.4 for disciplined art critique)."
 msgstr ""
 
-#: admin/views/settings.php:96
-msgid "Master System Instruction"
+#: admin/views/settings.php:106
+msgid "Reverse Search Provider"
 msgstr ""
 
-#: admin/views/settings.php:99
-msgid "Guides how Gemini evaluates the artwork and formats markdown sections."
+#: admin/views/settings.php:109
+msgid "Google Cloud Vision (Web Detection) — Recommended"
 msgstr ""
 
-#: admin/views/settings.php:104
-msgid "Max Image Dimension (px)"
+#: admin/views/settings.php:110
+msgid "SerpApi (Google Lens / Reverse Search)"
 msgstr ""
 
-#: admin/views/settings.php:107
-msgid "Uploaded images larger than this width/height are automatically resized before sending to Gemini to save bandwidth and improve latency (default 2048px)."
+#: admin/views/settings.php:111
+msgid "Disabled (Visual observation only)"
 msgstr ""
 
-#: admin/views/settings.php:115
-msgid "Target Contact Form 7 Form"
+#: admin/views/settings.php:113
+msgid "Searches the web for visually matching or identical artwork before AI critique."
 msgstr ""
 
 #: admin/views/settings.php:118
-msgid "No Contact Form 7 forms found. Please create a form in Contact Form 7 with an artwork file upload field."
+msgid "Google Cloud Vision API Key"
 msgstr ""
 
-#: admin/views/settings.php:121
-msgid "All forms with artwork field"
+#: admin/views/settings.php:123
+msgid "Active key detected from environment (.env / constant)"
 msgstr ""
 
 #: admin/views/settings.php:127
-msgid "The selected form will automatically have the artwork analyzer attached."
+msgid "Configured via .env (leave blank or override)"
 msgstr ""
 
-#: admin/views/settings.php:132
-msgid "Shortcode Usage"
+#: admin/views/settings.php:127
+msgid "AIza... (or shares Gemini Cloud API key)"
 msgstr ""
 
-#: admin/views/settings.php:135
-msgid "Optional: insert this shortcode on any page to explicitly render the analyzer container."
+#: admin/views/settings.php:128
+msgid "Uses Cloud Vision Web Detection (1,000 free requests/month, base64 payload). If blank, automatically attempts to reuse your Google API key."
 msgstr ""
 
-#: admin/views/settings.php:143
-msgid "Max Upload File Size (MB)"
+#: admin/views/settings.php:133
+msgid "SerpApi Key (Optional)"
 msgstr ""
 
-#: admin/views/settings.php:146
-msgid "Maximum allowed artwork file upload size (default 10 MB)."
+#: admin/views/settings.php:136
+msgid "Required only if SerpApi is selected as your reverse search provider."
 msgstr ""
 
-#: admin/views/settings.php:151
-msgid "Rate Limit Requests"
+#: admin/views/settings.php:144
+msgid "Web Research Provider"
 msgstr ""
 
-#: admin/views/settings.php:154
-msgid "requests per"
+#: admin/views/settings.php:147
+msgid "Wikipedia & Wikimedia (Built-in, 100% Free, No Key Required)"
 msgstr ""
 
-#: admin/views/settings.php:156
-msgid "seconds for anonymous visitors (Admins bypass rate limits)."
+#: admin/views/settings.php:148
+#: includes/providers/class-google-custom-search.php:29
+msgid "Google Custom Search JSON API"
 msgstr ""
 
-#: admin/views/settings.php:161
-msgid "Cloudflare Turnstile"
+#: admin/views/settings.php:149
+msgid "Tavily AI Search API"
+msgstr ""
+
+#: admin/views/settings.php:150
+msgid "Disabled"
+msgstr ""
+
+#: admin/views/settings.php:152
+msgid "Collects authoritative museum, artist, provenance, and art movement records based on reverse search entities."
+msgstr ""
+
+#: admin/views/settings.php:157
+msgid "Google Custom Search API Key"
+msgstr ""
+
+#: admin/views/settings.php:160
+msgid "Required if Google Custom Search is chosen (100 free queries/day)."
 msgstr ""
 
 #: admin/views/settings.php:165
-msgid "Enable Cloudflare Turnstile bot protection"
+msgid "Google Search Engine ID (cx)"
 msgstr ""
 
-#: admin/views/settings.php:171
-msgid "Turnstile Site Key"
+#: admin/views/settings.php:168
+msgid "Custom Search Engine ID from programmablesearchengine.google.com."
 msgstr ""
 
-#: admin/views/settings.php:178
-msgid "Turnstile Secret Key"
+#: admin/views/settings.php:173
+msgid "Tavily API Key"
 msgstr ""
 
-#: admin/views/settings.php:188
-msgid "Save Analysis to Database"
+#: admin/views/settings.php:176
+msgid "Required only if Tavily is selected as research provider."
+msgstr ""
+
+#: admin/views/settings.php:184
+msgid "Master System Instruction"
+msgstr ""
+
+#: admin/views/settings.php:187
+msgid "Directs Gemini to structure critique into Category A (Visual Observations), Category B (Research-Supported Findings with source links), and Category C (Uncertain Conclusions)."
 msgstr ""
 
 #: admin/views/settings.php:192
-msgid "Save completed analyses to wp_artwork_analyses table (Default: Off for privacy)"
+msgid "Max Image Dimension (px)"
 msgstr ""
 
-#: admin/views/settings.php:198
-msgid "Save Uploaded Images"
+#: admin/views/settings.php:195
+msgid "Uploaded images larger than this width/height are automatically downscaled before sending to Vision / Gemini to optimize latency and save bandwidth (default 2048px)."
 msgstr ""
 
-#: admin/views/settings.php:202
-msgid "Retain uploaded artworks permanently in uploads/artwork-analyses (Default: Off; temporary files are deleted after Gemini analysis)"
+#: admin/views/settings.php:203
+msgid "Target Contact Form 7 Form"
+msgstr ""
+
+#: admin/views/settings.php:206
+msgid "No Contact Form 7 forms found. Please create a form in Contact Form 7 with an artwork file upload field."
 msgstr ""
 
 #: admin/views/settings.php:209
-msgid "Save Settings"
+msgid "All forms with artwork field"
 msgstr ""
 
 #: admin/views/settings.php:215
-msgid "System Environment Diagnostics"
-msgstr ""
-
-#: admin/views/settings.php:216
-msgid "Verify that your WordPress host supports realtime streaming and external AI connections."
+msgid "The selected form will automatically have the artwork analyzer attached."
 msgstr ""
 
 #: admin/views/settings.php:220
-msgid "PHP Environment"
+msgid "Shortcode Usage"
 msgstr ""
 
-#: admin/views/settings.php:230
-msgid "WordPress & Integrations"
+#: admin/views/settings.php:223
+msgid "Renders the standalone artwork analyzer and launcher drawer on any page."
 msgstr ""
 
-#: admin/views/settings.php:240
-msgid "Upload & Execution Limits"
+#: admin/views/settings.php:231
+msgid "Max Upload File Size (MB)"
 msgstr ""
 
-#: admin/views/settings.php:251
-msgid "Interactive Diagnostics Tests"
+#: admin/views/settings.php:234
+msgid "Maximum allowed artwork file upload size (default 10 MB)."
 msgstr ""
 
-#: admin/views/settings.php:255
-msgid "Test Streaming (Chunk Latency Test)"
+#: admin/views/settings.php:239
+msgid "Rate Limit Requests"
+msgstr ""
+
+#: admin/views/settings.php:242
+msgid "requests per"
+msgstr ""
+
+#: admin/views/settings.php:244
+msgid "seconds for anonymous visitors (Admins bypass rate limits)."
+msgstr ""
+
+#: admin/views/settings.php:249
+msgid "Cloudflare Turnstile"
+msgstr ""
+
+#: admin/views/settings.php:253
+msgid "Enable Cloudflare Turnstile bot protection"
 msgstr ""
 
 #: admin/views/settings.php:259
-msgid "Test Gemini Connection"
+msgid "Turnstile Site Key"
 msgstr ""
 
 #: admin/views/settings.php:266
+msgid "Turnstile Secret Key"
+msgstr ""
+
+#: admin/views/settings.php:276
+msgid "Save Analysis to Database"
+msgstr ""
+
+#: admin/views/settings.php:280
+msgid "Save completed analyses to wp_artwork_analyses table (Default: Off for privacy)"
+msgstr ""
+
+#: admin/views/settings.php:286
+msgid "Save Uploaded Images"
+msgstr ""
+
+#: admin/views/settings.php:290
+msgid "Retain uploaded artworks permanently in uploads/artwork-analyses (Default: Off; temporary files are deleted after analysis)"
+msgstr ""
+
+#: admin/views/settings.php:297
+msgid "Save Settings"
+msgstr ""
+
+#: admin/views/settings.php:303
+msgid "System Environment & API Diagnostics"
+msgstr ""
+
+#: admin/views/settings.php:304
+msgid "Verify that your WordPress environment and external AI/search APIs are operational."
+msgstr ""
+
+#: admin/views/settings.php:308
+msgid "PHP Environment"
+msgstr ""
+
+#: admin/views/settings.php:318
+msgid "AI & Research Providers"
+msgstr ""
+
+#: admin/views/settings.php:328
+msgid "Upload & Execution Limits"
+msgstr ""
+
+#: admin/views/settings.php:339
+msgid "Interactive Diagnostics Tests"
+msgstr ""
+
+#: admin/views/settings.php:343
+msgid "Test Streaming (Latency Test)"
+msgstr ""
+
+#: admin/views/settings.php:347
+msgid "Test Gemini Connection"
+msgstr ""
+
+#: admin/views/settings.php:351
+msgid "Test Reverse Search Provider"
+msgstr ""
+
+#: admin/views/settings.php:355
+msgid "Test Web Research Provider"
+msgstr ""
+
+#: admin/views/settings.php:362
 msgid "Diagnostic Output Console"
 msgstr ""
 
-#: includes/class-cf7-integration.php:167
-#: templates/analyzer-output.php:13
-msgid "Analyzing artwork..."
-msgstr ""
-
-#: includes/class-cf7-integration.php:168
-#: templates/analyzer-output.php:18
-msgid "Stop Analysis"
-msgstr ""
-
-#: includes/class-cf7-integration.php:169
-msgid "Analyze Another Artwork"
-msgstr ""
-
-#: includes/class-cf7-integration.php:170
-#: templates/analyzer-output.php:77
-msgid "Try Again"
-msgstr ""
-
-#: includes/class-cf7-integration.php:171
-msgid "Preparing artwork analysis..."
-msgstr ""
-
-#: includes/class-cf7-integration.php:172
-msgid "Optimizing & uploading image..."
-msgstr ""
-
-#: includes/class-cf7-integration.php:173
-msgid "Generating live critique..."
-msgstr ""
-
 #: includes/class-cf7-integration.php:174
-msgid "Artwork analysis complete."
+#: templates/analyzer-drawer.php:82
+#: templates/analyzer-output.php:15
+msgid "Analyze Artwork"
 msgstr ""
 
 #: includes/class-cf7-integration.php:175
-msgid "Analysis was stopped."
+#: templates/analyzer-output.php:25
+msgid "Analyzing artwork..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:176
-msgid "File exceeds maximum allowed size."
+#: templates/analyzer-output.php:34
+msgid "Stop Analysis"
 msgstr ""
 
 #: includes/class-cf7-integration.php:177
-msgid "Only JPG, PNG, and WEBP files are supported."
+#: templates/analyzer-drawer.php:206
+msgid "Analyze Another Artwork"
 msgstr ""
 
 #: includes/class-cf7-integration.php:178
-msgid "Please select an artwork image to analyze."
+#: templates/analyzer-drawer.php:196
+#: templates/analyzer-output.php:93
+msgid "Try Again"
 msgstr ""
 
 #: includes/class-cf7-integration.php:179
-msgid "Choose Image File"
+msgid "Start Over"
 msgstr ""
 
 #: includes/class-cf7-integration.php:180
-msgid "Take Photo"
+#: templates/analyzer-drawer.php:69
+msgid "Replace Image"
 msgstr ""
 
 #: includes/class-cf7-integration.php:181
-msgid "Capture Artwork with Camera"
+msgid "Preparing & optimizing image..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:182
-msgid "Snap Photo"
+#: templates/analyzer-drawer.php:171
+msgid "Searching for visual matches online..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:183
-msgid "Cancel"
+msgid "Researching artist, history, & collection records..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:184
-msgid "Remove"
+msgid "Optimizing & uploading image..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:185
+msgid "Generating live critique..."
+msgstr ""
+
+#: includes/class-cf7-integration.php:186
+#: includes/class-rest-controller.php:188
+msgid "Artwork analysis complete."
+msgstr ""
+
+#: includes/class-cf7-integration.php:187
+msgid "Analysis was stopped."
+msgstr ""
+
+#: includes/class-cf7-integration.php:188
+msgid "File exceeds maximum allowed size."
+msgstr ""
+
+#: includes/class-cf7-integration.php:189
+msgid "Only JPG, PNG, and WEBP files are supported."
+msgstr ""
+
+#: includes/class-cf7-integration.php:190
+msgid "Please select an artwork image to analyze."
+msgstr ""
+
+#: includes/class-cf7-integration.php:191
+msgid "Choose Image File"
+msgstr ""
+
+#: includes/class-cf7-integration.php:192
+msgid "Take Photo"
+msgstr ""
+
+#: includes/class-cf7-integration.php:193
+msgid "Capture Artwork with Camera"
+msgstr ""
+
+#: includes/class-cf7-integration.php:194
+#: templates/analyzer-drawer.php:48
+msgid "Snap Photo"
+msgstr ""
+
+#: includes/class-cf7-integration.php:195
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-cf7-integration.php:196
+msgid "Close"
+msgstr ""
+
+#: includes/class-cf7-integration.php:197
+#: templates/analyzer-drawer.php:72
+msgid "Remove"
+msgstr ""
+
+#: includes/class-cf7-integration.php:198
 msgid "Camera not available or access denied. Please choose a file instead."
 msgstr ""
 
-#: includes/class-gemini-client.php:21
+#: includes/class-cf7-integration.php:199
+msgid "Drag & drop artwork here, or browse files"
+msgstr ""
+
+#: includes/class-cf7-integration.php:200
+msgid "An artwork analysis is currently in progress. Do you want to cancel and close?"
+msgstr ""
+
+#: includes/class-cf7-integration.php:201
+#: templates/analyzer-drawer.php:129
+msgid "AI Critique"
+msgstr ""
+
+#: includes/class-cf7-integration.php:202
+#: templates/analyzer-drawer.php:133
+msgid "Visual Matches"
+msgstr ""
+
+#: includes/class-cf7-integration.php:203
+#: templates/analyzer-drawer.php:137
+msgid "Research Sources"
+msgstr ""
+
+#: includes/class-cf7-integration.php:204
+msgid "No direct visual matches found online. Proceeding with independent visual analysis."
+msgstr ""
+
+#: includes/class-cf7-integration.php:205
+msgid "No encyclopedic background records found for this specific work."
+msgstr ""
+
+#: includes/class-cf7-integration.php:206
+msgid "Visual Identification Candidate"
+msgstr ""
+
+#: includes/class-cf7-integration.php:207
+msgid "Exact Match"
+msgstr ""
+
+#: includes/class-cf7-integration.php:208
+msgid "Partial Match"
+msgstr ""
+
+#: includes/class-cf7-integration.php:209
+msgid "Similar"
+msgstr ""
+
+#: includes/class-gemini-client.php:22
 msgid "Gemini API key is not configured. Please configure it in settings or .env."
 msgstr ""
 
-#: includes/class-gemini-client.php:109
-#: includes/class-gemini-client.php:128
+#: includes/class-gemini-client.php:115
+#: includes/class-gemini-client.php:134
 msgid "An upstream Gemini AI error occurred."
 msgstr ""
 
-#: includes/class-gemini-client.php:176
+#: includes/class-gemini-client.php:182
 msgid "The artwork analysis timed out. Please try again."
 msgstr ""
 
-#: includes/class-gemini-client.php:178
+#: includes/class-gemini-client.php:184
 msgid "Failed communicating with Gemini AI: "
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: includes/class-gemini-client.php:186
+#: includes/class-gemini-client.php:192
 #, php-format
 msgid "Gemini returned HTTP status %d."
 msgstr ""
 
-#: includes/class-gemini-client.php:225
+#: includes/class-gemini-client.php:231
 msgid "API key is missing or not configured."
 msgstr ""
 
-#: includes/class-gemini-client.php:289
+#: includes/class-gemini-client.php:295
 msgid "Successfully connected to Gemini API!"
 msgstr ""
 
@@ -419,6 +613,53 @@ msgstr ""
 msgid "Rate limit exceeded. You may only perform %1$d artwork analyses per %2$d minutes. Please wait before trying again."
 msgstr ""
 
+#: includes/class-research-orchestrator.php:28
+msgid "Reverse image search is disabled."
+msgstr ""
+
+#. translators: %s: provider name
+#: includes/class-research-orchestrator.php:42
+#: includes/class-research-orchestrator.php:94
+#, php-format
+msgid "%s is selected but credentials are not configured."
+msgstr ""
+
+#: includes/class-research-orchestrator.php:83
+msgid "Web research is disabled."
+msgstr ""
+
+#: includes/class-research-orchestrator.php:108
+msgid "No specific artwork or artist entities found to research."
+msgstr ""
+
+#: includes/class-rest-controller.php:137
+msgid "Preparing and optimizing image..."
+msgstr ""
+
+#: includes/class-rest-controller.php:144
+msgid "Searching for visual artwork matches online..."
+msgstr ""
+
+#: includes/class-rest-controller.php:154
+msgid "Researching artist, history, and museum collection records..."
+msgstr ""
+
+#: includes/class-rest-controller.php:164
+msgid "Generating research-aware visual critique..."
+msgstr ""
+
+#: includes/class-rest-controller.php:258
+msgid "Please provide a search query."
+msgstr ""
+
+#: includes/class-rest-controller.php:286
+msgid "No reverse image search provider is currently active."
+msgstr ""
+
+#: includes/class-rest-controller.php:305
+msgid "No web research provider is currently active."
+msgstr ""
+
 #: includes/class-security.php:68
 msgid "Security verification failed: missing verification token."
 msgstr ""
@@ -431,54 +672,236 @@ msgstr ""
 msgid "Security verification failed. Please refresh and try again."
 msgstr ""
 
-#: templates/analyzer-output.php:22
+#: includes/providers/class-google-custom-search.php:109
+#: includes/providers/class-google-custom-search.php:195
+msgid "Google Custom Search API Key or Engine ID (cx) is missing."
+msgstr ""
+
+#: includes/providers/class-google-custom-search.php:226
+msgid "Google Custom Search API responded successfully!"
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:62
+msgid "Google Cloud Vision (Web Detection)"
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:126
+msgid "Google Cloud Vision API key is not configured. Please add it in settings or .env."
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:133
+msgid "No image data provided for reverse search."
+msgstr ""
+
+#. translators: %s: error message
+#: includes/providers/class-google-vision-search.php:170
+#, php-format
+msgid "Google Vision request failed: %s"
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: includes/providers/class-google-vision-search.php:183
+#, php-format
+msgid "Google Vision returned HTTP error %d."
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:256
+msgid "Matching Source Page"
+msgstr ""
+
+#. translators: %s: domain name
+#: includes/providers/class-google-vision-search.php:284
+#, php-format
+msgid "Exact Visual Match (%s)"
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:346
+msgid "Google Cloud Vision API key is not configured."
+msgstr ""
+
+#: includes/providers/class-google-vision-search.php:396
+msgid "Google Cloud Vision API responded successfully! Reverse image search is ready."
+msgstr ""
+
+#: includes/providers/class-serpapi-search.php:29
+msgid "SerpApi (Google Lens & Reverse Image)"
+msgstr ""
+
+#: includes/providers/class-serpapi-search.php:79
+msgid "SerpApi key is not configured. Please add it in settings or .env."
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: includes/providers/class-serpapi-search.php:127
+#, php-format
+msgid "SerpApi returned HTTP error %d."
+msgstr ""
+
+#: includes/providers/class-serpapi-search.php:204
+msgid "SerpApi API key is not configured."
+msgstr ""
+
+#: includes/providers/class-serpapi-search.php:235
+msgid "SerpApi is connected and functioning normally."
+msgstr ""
+
+#: includes/providers/class-tavily-research.php:29
+msgid "Tavily AI Search (Contextual Research API)"
+msgstr ""
+
+#: includes/providers/class-tavily-research.php:80
+msgid "Tavily API key is not configured. Please add it in settings or .env."
+msgstr ""
+
+#: includes/providers/class-tavily-research.php:169
+msgid "Tavily API key is not configured."
+msgstr ""
+
+#: includes/providers/class-tavily-research.php:204
+msgid "Tavily AI Search responded successfully!"
+msgstr ""
+
+#: includes/providers/class-wikipedia-research.php:30
+msgid "Wikipedia & Wikimedia (Built-in, Free, No API Key)"
+msgstr ""
+
+#: includes/providers/class-wikipedia-research.php:202
+msgid "Wikipedia REST API is connected and responding normally."
+msgstr ""
+
+#: includes/providers/class-wikipedia-research.php:209
+msgid "Failed to reach Wikipedia API."
+msgstr ""
+
+#: templates/analyzer-drawer.php:23
+msgid "Visual Reverse Search, Web Research & AI Critique"
+msgstr ""
+
+#: templates/analyzer-drawer.php:25
+msgid "Close Sidebar"
+msgstr ""
+
+#: templates/analyzer-drawer.php:25
+msgid "Close (Esc)"
+msgstr ""
+
+#: templates/analyzer-drawer.php:35
+msgid "Artwork Image Upload Area"
+msgstr ""
+
+#: templates/analyzer-drawer.php:40
+msgid "Drag and drop artwork here"
+msgstr ""
+
+#: templates/analyzer-drawer.php:41
+msgid "or choose from your device"
+msgstr ""
+
+#: templates/analyzer-drawer.php:45
+msgid "Browse Files"
+msgstr ""
+
+#: templates/analyzer-drawer.php:52
+msgid "Supports JPG, PNG, and WEBP up to 10 MB. High-res images are automatically downscaled for analysis."
+msgstr ""
+
+#: templates/analyzer-drawer.php:59
+msgid "Artwork Preview"
+msgstr ""
+
+#: templates/analyzer-drawer.php:92
+msgid "Preparing analysis..."
+msgstr ""
+
+#: templates/analyzer-drawer.php:96
+msgid "Stop"
+msgstr ""
+
+#: templates/analyzer-drawer.php:107
+msgid "1. Prepare"
+msgstr ""
+
+#: templates/analyzer-drawer.php:111
+msgid "2. Visual Search"
+msgstr ""
+
+#: templates/analyzer-drawer.php:115
+msgid "3. Web Research"
+msgstr ""
+
+#: templates/analyzer-drawer.php:119
+msgid "4. AI Critique"
+msgstr ""
+
+#: templates/analyzer-drawer.php:157
+msgid "Visual Search Identification Candidate"
+msgstr ""
+
+#: templates/analyzer-drawer.php:163
+msgid "Detected Art Entities & Tags"
+msgstr ""
+
+#: templates/analyzer-drawer.php:181
+msgid "Gathering encyclopedic art records..."
+msgstr ""
+
+#: templates/analyzer-drawer.php:191
+#: templates/analyzer-output.php:89
+msgid "Analysis Notice"
+msgstr ""
+
+#: templates/analyzer-drawer.php:208
+msgid "Powered by Google Gemini & Visual Web Detection"
+msgstr ""
+
+#: templates/analyzer-output.php:30
+msgid "Open Sidebar"
+msgstr ""
+
+#: templates/analyzer-output.php:38
 msgid "Analyze Another"
 msgstr ""
 
-#: templates/analyzer-output.php:33
+#: templates/analyzer-output.php:49
 msgid "Uploaded Artwork Preview"
 msgstr ""
 
-#: templates/analyzer-output.php:43
+#: templates/analyzer-output.php:59
 msgid "Analysis Progress"
 msgstr ""
 
-#: templates/analyzer-output.php:45
+#: templates/analyzer-output.php:61
 msgid "Overview"
 msgstr ""
 
-#: templates/analyzer-output.php:46
+#: templates/analyzer-output.php:62
 msgid "Identification"
 msgstr ""
 
-#: templates/analyzer-output.php:47
+#: templates/analyzer-output.php:63
 msgid "Subject Matter"
 msgstr ""
 
-#: templates/analyzer-output.php:48
+#: templates/analyzer-output.php:64
 msgid "Composition"
 msgstr ""
 
-#: templates/analyzer-output.php:49
+#: templates/analyzer-output.php:65
 msgid "Color Analysis"
 msgstr ""
 
-#: templates/analyzer-output.php:50
+#: templates/analyzer-output.php:66
 msgid "Technique & Style"
 msgstr ""
 
-#: templates/analyzer-output.php:51
+#: templates/analyzer-output.php:67
 msgid "Mood & Emotion"
 msgstr ""
 
-#: templates/analyzer-output.php:52
+#: templates/analyzer-output.php:68
 msgid "Meaning & Context"
 msgstr ""
 
-#: templates/analyzer-output.php:53
+#: templates/analyzer-output.php:69
 msgid "Summary"
-msgstr ""
-
-#: templates/analyzer-output.php:73
-msgid "Analysis Notice"
 msgstr ""

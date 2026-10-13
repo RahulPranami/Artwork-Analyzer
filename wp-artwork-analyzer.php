@@ -3,7 +3,7 @@
  * Plugin Name: WP Artwork Analyzer
  * Plugin URI: https://wordpress.org/plugins/wp-artwork-analyzer/
  * Description: AI-powered artwork analysis with realtime streaming responses using Google Gemini and Contact Form 7.
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: Antigravity
  * Author URI: https://wordpress.org/plugins/wp-artwork-analyzer/
  * License: GPL v2 or later
@@ -16,7 +16,7 @@
 
 defined('ABSPATH') || exit;
 
-define('WPA_ART_ANALYZER_VERSION', '1.0.1');
+define('WPA_ART_ANALYZER_VERSION', '1.1.0');
 define('WPA_ART_ANALYZER_PATH', plugin_dir_path(__FILE__));
 define('WPA_ART_ANALYZER_URL', plugin_dir_url(__FILE__));
 define('WPA_ART_ANALYZER_BASENAME', plugin_basename(__FILE__));

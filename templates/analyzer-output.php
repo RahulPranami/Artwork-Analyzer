@@ -1,10 +1,22 @@
 <?php
 /**
  * Output container template for WP Artwork Analyzer.
+ *
+ * @package WP_Artwork_Analyzer
  */
 
 defined('ABSPATH') || exit;
 ?>
+
+<!-- Launcher Button Container -->
+<div class="wpa-launcher-bar" id="wpa-launcher-bar">
+    <button type="button" class="wpa-btn wpa-btn-primary wpa-drawer-launcher-btn" id="wpa-drawer-launcher-btn" aria-haspopup="dialog">
+        <span class="dashicons dashicons-art" aria-hidden="true"></span>
+        <span><?php esc_html_e('Analyze Artwork', 'wp-artwork-analyzer'); ?></span>
+    </button>
+</div>
+
+<!-- Inline Output Wrapper (Preserved for backwards-compatibility and inline embedding) -->
 <div id="wpa-analyzer-wrapper" class="wpa-analyzer-wrapper" style="display:none;" data-state="idle">
     <!-- Header / Status Banner -->
     <div class="wpa-header">
@@ -13,6 +25,10 @@ defined('ABSPATH') || exit;
             <span class="wpa-status-text"><?php esc_html_e('Analyzing artwork...', 'wp-artwork-analyzer'); ?></span>
         </div>
         <div class="wpa-header-actions">
+            <button type="button" class="wpa-btn wpa-btn-secondary wpa-open-drawer-btn" id="wpa-open-drawer-btn">
+                <span class="dashicons dashicons-slides" aria-hidden="true"></span>
+                <span><?php esc_html_e('Open Sidebar', 'wp-artwork-analyzer'); ?></span>
+            </button>
             <button type="button" class="wpa-btn wpa-btn-stop" id="wpa-btn-stop">
                 <span class="dashicons dashicons-controls-pause" aria-hidden="true"></span>
                 <span><?php esc_html_e('Stop Analysis', 'wp-artwork-analyzer'); ?></span>
@@ -80,3 +96,12 @@ defined('ABSPATH') || exit;
         </div>
     </div>
 </div>
+
+<?php
+// Render the slide-in drawer once per request
+global $wpa_drawer_rendered;
+if (empty($wpa_drawer_rendered)) {
+    $wpa_drawer_rendered = true;
+    include WPA_ART_ANALYZER_PATH . 'templates/analyzer-drawer.php';
+}
+?>
