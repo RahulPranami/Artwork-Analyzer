@@ -73,11 +73,11 @@ $active_web_provider = WPA_Art_Analyzer_Web_Research_Factory::get_active_provide
                         <th scope="row"><label for="model"><?php esc_html_e('Gemini Model', 'wp-artwork-analyzer'); ?></label></th>
                         <td>
                             <select name="model" id="model">
+                                <option value="gemini-3.8-flash" <?php selected($settings['model'], 'gemini-3.8-flash'); ?>>gemini-3.8-flash (Recommended, Latest)</option>
                                 <option value="gemini-3.5-flash-lite" <?php selected($settings['model'], 'gemini-3.5-flash-lite'); ?>>gemini-3.5-flash-lite (Fastest, High Availability)</option>
-                                <option value="gemini-3.1-flash-lite" <?php selected($settings['model'], 'gemini-3.1-flash-lite'); ?>>gemini-3.1-flash-lite (Ultra Fast)</option>
                                 <option value="gemini-3.5-flash" <?php selected($settings['model'], 'gemini-3.5-flash'); ?>>gemini-3.5-flash (Balanced)</option>
-                                <option value="gemini-3.6-flash" <?php selected($settings['model'], 'gemini-3.6-flash'); ?>>gemini-3.6-flash (Latest)</option>
-                                <option value="gemini-2.5-flash" <?php selected($settings['model'], 'gemini-2.5-flash'); ?>>gemini-2.5-flash</option>
+                                <option value="gemini-3.6-flash" <?php selected($settings['model'], 'gemini-3.6-flash'); ?>>gemini-3.6-flash</option>
+                                <option value="gemini-3.1-flash-lite" <?php selected($settings['model'], 'gemini-3.1-flash-lite'); ?>>gemini-3.1-flash-lite (Ultra Fast)</option>
                             </select>
                             <p class="description"><?php esc_html_e('Select which multimodal vision model processes the artwork.', 'wp-artwork-analyzer'); ?></p>
                         </td>
