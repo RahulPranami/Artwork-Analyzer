@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-13T12:07:00+00:00\n"
+"POT-Creation-Date: 2026-10-13T12:29:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-artwork-analyzer\n"
@@ -425,7 +425,7 @@ msgid "Generating live critique..."
 msgstr ""
 
 #: includes/class-cf7-integration.php:186
-#: includes/class-rest-controller.php:188
+#: includes/class-rest-controller.php:253
 msgid "Artwork analysis complete."
 msgstr ""
 
@@ -530,31 +530,51 @@ msgstr ""
 msgid "Gemini API key is not configured. Please configure it in settings or .env."
 msgstr ""
 
-#: includes/class-gemini-client.php:115
-#: includes/class-gemini-client.php:134
+#: includes/class-gemini-client.php:125
+#: includes/class-gemini-client.php:144
 msgid "An upstream Gemini AI error occurred."
 msgstr ""
 
-#: includes/class-gemini-client.php:182
+#: includes/class-gemini-client.php:199
 msgid "The artwork analysis timed out. Please try again."
 msgstr ""
 
-#: includes/class-gemini-client.php:184
+#: includes/class-gemini-client.php:201
 msgid "Failed communicating with Gemini AI: "
 msgstr ""
 
+#: includes/class-gemini-client.php:209
+msgid "Gemini API Prepay credit balance is depleted or billing account requires payment (HTTP 402 Payment Required). Please add credits or check billing in Google AI Studio or Google Cloud Console."
+msgstr ""
+
+#: includes/class-gemini-client.php:211
+msgid "Gemini API rate limit or quota exceeded (HTTP 429). Please wait a moment before trying again."
+msgstr ""
+
+#: includes/class-gemini-client.php:213
+msgid "Gemini API authentication failed (HTTP "
+msgstr ""
+
 #. translators: %d: HTTP status code
-#: includes/class-gemini-client.php:192
+#: includes/class-gemini-client.php:216
 #, php-format
 msgid "Gemini returned HTTP status %d."
 msgstr ""
 
-#: includes/class-gemini-client.php:231
+#: includes/class-gemini-client.php:258
 msgid "API key is missing or not configured."
 msgstr ""
 
-#: includes/class-gemini-client.php:295
+#: includes/class-gemini-client.php:322
 msgid "Successfully connected to Gemini API!"
+msgstr ""
+
+#: includes/class-gemini-client.php:328
+msgid "Prepay credit balance is depleted or billing account requires payment (HTTP 402 Payment Required). Please add credits or manage billing at aistudio.google.com/billing."
+msgstr ""
+
+#: includes/class-gemini-client.php:330
+msgid "Rate limit or quota exceeded (HTTP 429). Please wait a moment or request a quota increase."
 msgstr ""
 
 #: includes/class-image-handler.php:34
@@ -632,31 +652,31 @@ msgstr ""
 msgid "No specific artwork or artist entities found to research."
 msgstr ""
 
-#: includes/class-rest-controller.php:137
+#: includes/class-rest-controller.php:162
 msgid "Preparing and optimizing image..."
 msgstr ""
 
-#: includes/class-rest-controller.php:144
+#: includes/class-rest-controller.php:169
 msgid "Searching for visual artwork matches online..."
 msgstr ""
 
-#: includes/class-rest-controller.php:154
+#: includes/class-rest-controller.php:191
 msgid "Researching artist, history, and museum collection records..."
 msgstr ""
 
-#: includes/class-rest-controller.php:164
+#: includes/class-rest-controller.php:212
 msgid "Generating research-aware visual critique..."
 msgstr ""
 
-#: includes/class-rest-controller.php:258
+#: includes/class-rest-controller.php:325
 msgid "Please provide a search query."
 msgstr ""
 
-#: includes/class-rest-controller.php:286
+#: includes/class-rest-controller.php:353
 msgid "No reverse image search provider is currently active."
 msgstr ""
 
-#: includes/class-rest-controller.php:305
+#: includes/class-rest-controller.php:372
 msgid "No web research provider is currently active."
 msgstr ""
 
@@ -694,32 +714,32 @@ msgid "No image data provided for reverse search."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/providers/class-google-vision-search.php:170
+#: includes/providers/class-google-vision-search.php:183
 #, php-format
 msgid "Google Vision request failed: %s"
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: includes/providers/class-google-vision-search.php:183
+#: includes/providers/class-google-vision-search.php:196
 #, php-format
 msgid "Google Vision returned HTTP error %d."
 msgstr ""
 
-#: includes/providers/class-google-vision-search.php:256
+#: includes/providers/class-google-vision-search.php:278
 msgid "Matching Source Page"
 msgstr ""
 
 #. translators: %s: domain name
-#: includes/providers/class-google-vision-search.php:284
+#: includes/providers/class-google-vision-search.php:306
 #, php-format
 msgid "Exact Visual Match (%s)"
 msgstr ""
 
-#: includes/providers/class-google-vision-search.php:346
+#: includes/providers/class-google-vision-search.php:368
 msgid "Google Cloud Vision API key is not configured."
 msgstr ""
 
-#: includes/providers/class-google-vision-search.php:396
+#: includes/providers/class-google-vision-search.php:418
 msgid "Google Cloud Vision API responded successfully! Reverse image search is ready."
 msgstr ""
 
@@ -765,11 +785,11 @@ msgstr ""
 msgid "Wikipedia & Wikimedia (Built-in, Free, No API Key)"
 msgstr ""
 
-#: includes/providers/class-wikipedia-research.php:202
+#: includes/providers/class-wikipedia-research.php:217
 msgid "Wikipedia REST API is connected and responding normally."
 msgstr ""
 
-#: includes/providers/class-wikipedia-research.php:209
+#: includes/providers/class-wikipedia-research.php:224
 msgid "Failed to reach Wikipedia API."
 msgstr ""
 

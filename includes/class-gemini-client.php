@@ -205,8 +205,16 @@ class WPA_Art_Analyzer_Gemini_Client {
 
         if ($http_code !== 200 && !$had_error) {
             $code = self::map_http_code_to_error($http_code);
-            /* translators: %d: HTTP status code */
-            $msg  = sprintf(__('Gemini returned HTTP status %d.', 'wp-artwork-analyzer'), $http_code);
+            if ((int)$http_code === 402) {
+                $msg = __('Gemini API Prepay credit balance is depleted or billing account requires payment (HTTP 402 Payment Required). Please add credits or check billing in Google AI Studio or Google Cloud Console.', 'wp-artwork-analyzer');
+            } elseif ((int)$http_code === 429) {
+                $msg = __('Gemini API rate limit or quota exceeded (HTTP 429). Please wait a moment before trying again.', 'wp-artwork-analyzer');
+            } elseif ((int)$http_code === 403 || (int)$http_code === 401) {
+                $msg = __('Gemini API authentication failed (HTTP ' . (int)$http_code . '). Please check your API key in settings or .env.', 'wp-artwork-analyzer');
+            } else {
+                /* translators: %d: HTTP status code */
+                $msg = sprintf(__('Gemini returned HTTP status %d.', 'wp-artwork-analyzer'), $http_code);
+            }
             call_user_func($on_error, $code, $msg);
             return false;
         }
@@ -225,6 +233,8 @@ class WPA_Art_Analyzer_Gemini_Client {
             case 401:
             case 403:
                 return 'GEMINI_AUTH_ERROR';
+            case 402:
+                return 'GEMINI_PAYMENT_REQUIRED';
             case 429:
                 return 'GEMINI_RATE_LIMIT';
             case 408:
@@ -314,7 +324,13 @@ class WPA_Art_Analyzer_Gemini_Client {
             ];
         }
 
-        $err_msg = $data['error']['message'] ?? "HTTP error {$code}";
+        if ($code === 402) {
+            $err_msg = __('Prepay credit balance is depleted or billing account requires payment (HTTP 402 Payment Required). Please add credits or manage billing at aistudio.google.com/billing.', 'wp-artwork-analyzer');
+        } elseif ($code === 429) {
+            $err_msg = __('Rate limit or quota exceeded (HTTP 429). Please wait a moment or request a quota increase.', 'wp-artwork-analyzer');
+        } else {
+            $err_msg = $data['error']['message'] ?? "HTTP error {$code}";
+        }
         return [
             'success' => false,
             'model'   => $clean_model,
